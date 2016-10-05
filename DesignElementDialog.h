@@ -81,3 +81,14 @@ private:
 	QLineEdit *lineEdit_x=0, *lineEdit_y=0, *lineEdit_d=0, *lineEdit_k=0;
 	QComboBox *comboBox_type=0;	
 };
+
+
+//  to use the dialog to get data in another code :
+/*
+       DesignElementDialog deDlg;
+       deDlg.setModal(true);
+       if (!deDlg.exec()) { //deDlg.show();
+		double x, y, d, k; int element_type;
+		deDlg.get_data(x, y, d, k, element_type);
+	}	
+*/
