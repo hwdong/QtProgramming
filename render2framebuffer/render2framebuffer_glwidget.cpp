@@ -30,25 +30,26 @@ QImage createImageWithFBO()
 	QOpenGLFramebufferObject fbo(drawRectSize, fboFormat);
 	fbo.bind();
 
-	QOpenGLPaintDevice device(drawRectSize);
-	QPainter painter;
-	painter.begin(&device);
+	QOpenGLPaintDevice device(drawRectSize);	
+	QPainter painter(&device);
+//	painter.begin(&device);
 	painter.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
 
-	painter.fillRect(drawRect, Qt::blue);
-
-	painter.drawTiledPixmap(drawRect, QPixmap(":/qt-project.org/qmessagebox/images/qtlogo-64.png"));
-
-	painter.setPen(QPen(Qt::green, 5));
-	painter.setBrush(Qt::red);
-	painter.drawEllipse(0, 100, 400, 200);
-	painter.drawEllipse(100, 0, 200, 400);
-
-	painter.setPen(QPen(Qt::white, 0));
-	QFont font;
-	font.setPointSize(24);
-	painter.setFont(font);
-	painter.drawText(drawRect, "Hello FBO", QTextOption(Qt::AlignCenter));
+	//now start OpenGL painting
+	painter.beginNativePainting();
+	glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+	//		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(1.0, 1.0, 1.0);
+	glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+	glBegin(GL_POLYGON);
+	glVertex3f(0.25, 0.25, 0.0);
+	glVertex3f(0.75, 0.25, 0.0);
+	glVertex3f(0.75, 0.75, 0.0);
+	glVertex3f(0.25, 0.75, 0.0);
+	glEnd();
+	glFlush();
+	painter.endNativePainting();
 
 	painter.end();
 
