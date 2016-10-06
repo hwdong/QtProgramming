@@ -121,3 +121,20 @@ QImage renderOffScreen(const int width=512,const int height=512,
 	return fbo.toImage();
 #endif
 }
+
+
+//--------------------test the above render2framebuffer-----------
+#include <QtWidgets/QApplication>
+
+int main(int argc, char **argv)
+{
+	QApplication app(argc, argv);
+
+	QImage targetImage = renderOffScreen();
+        targetImage.save("screen.png", "PNG");
+
+	QLabel label;
+	label.setPixmap(QPixmap::fromImage(targetImage));
+	label.show();
+	return app.exec();
+}
